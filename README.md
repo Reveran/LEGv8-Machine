@@ -19,7 +19,7 @@
 * Uses the *Two's Complement* for negative address offsets
 
 ### Still Unimplemented
-* Some Uncomon Instructions
+* Some Uncommon Instructions
 * Pseudo-Instructions
 * IW/IM Instructions
 * Commentss
