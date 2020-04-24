@@ -6,8 +6,12 @@
 
 ### Notes
 
-* The labels MUST be separated from the instructions by tabulations "\t" (as many as you like/need)
-* Las partes de cada instrucción (OpCode, Rd, Rn, etc.); deben estar separadas por solo 1 espacio espacio
+* The labels *MUST* be separated from the instructions by tabulations "\t" (as many as you like / need)
+* The Instruction parts *MUST* Be separated by *ONE* space " "
+
+    |Labels     |Instructions     |
+    |:----------|:----------------|
+    |load0		|ADDI X14 XZR #0  |
 
 ### Status
 * Translate type (R, I, D, B, CB) instructions
@@ -19,13 +23,3 @@
 * Pseudo-Instructions
 * IW/IM Instructions
 * Commentss
-
-
-|Labels     |Instructions     |
-|:----------|:----------------|
-|			|ADDI X14 XZR #0  |
-|while0		|SUB X9 X19 X20   |
-|			|CBZ X9 endwhile0 |
-|			|ADDI X19 X19 #1  |
-|			|B while0         |
-|endwhile0	|ADD X0 X19 XZR   |
