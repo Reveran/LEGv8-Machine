@@ -21,6 +21,9 @@ inst = {
 	"ORRI" : "1011001000",
 	"EORI" : "1101001000",
 
+	"LDUR" : "11111000010",
+	"STUR" : "11111000000",
+
 	"B" : "000101",
 	"BL" : "100101",
 
@@ -117,6 +120,14 @@ class Instruccion():
 			elif self.type == "I":	
 				while len(tmp) < 12:
 					tmp = "0" + tmp
+		
+		elif self.type == "D":
+			add = int(self.s[-1][1:])
+			if add < 0:
+				tmp = (~ int2ba(-add, 9)) ^ int2ba(1, 9)
+			else:
+				tmp = int2ba(add, 9)
+			tmp = str(tmp)[10:-2]
 
 		elif self.type == "B" or self.type == "CB":
 			jmp = 0
@@ -138,6 +149,8 @@ class Instruccion():
 		if self.type == "R" or self.type == "R2":
 			a = self.opcode + self.Rm + self.ShIn + self.Rn + self.Rd
 		elif self.type == "I":
+			a = self.opcode + self.ShIn + self.Rn + self.Rd
+		elif self.type == "D":
 			a = self.opcode + self.ShIn + self.Rn + self.Rd
 		elif self.type == "B":
 			a = self.opcode + self.ShIn

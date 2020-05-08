@@ -6,6 +6,7 @@
 
 ### Notes
 
+* The Library [*Bitarray*](https://pypi.org/project/bitarray/) is needed, Run: ```pip install bitarray```
 * The labels *MUST* be separated from the instructions by tabulations "\t" (as many as you like / need)
 * The Instruction parts *MUST* Be separated by *ONE* space " "
 
