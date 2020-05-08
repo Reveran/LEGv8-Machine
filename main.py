@@ -151,7 +151,7 @@ class Instruccion():
 		elif self.type == "I":
 			a = self.opcode + self.ShIn + self.Rn + self.Rd
 		elif self.type == "D":
-			a = self.opcode + self.ShIn + self.Rn + self.Rd
+			a = self.opcode + self.ShIn + "00" + self.Rn + self.Rd
 		elif self.type == "B":
 			a = self.opcode + self.ShIn
 		elif self.type == "CB":

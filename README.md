@@ -20,7 +20,8 @@
 * Uses the *Two's Complement* for negative address offsets
 
 ### Still Unimplemented
+* OP2 bits in D-Type Instructions
 * Some Uncommon Instructions
 * Pseudo-Instructions
 * IW/IM Instructions
-* Commentss
+* Comments
