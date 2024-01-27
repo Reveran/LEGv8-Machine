@@ -124,7 +124,9 @@ class Instruccion():
 		elif self.type == "D":
 			add = int(self.s[-1][1:])
 			if add < 0:
-				tmp = (~ int2ba(-add, 9)) ^ int2ba(1, 9)
+				tmp = int((~ int2ba(-add, 9)).to01(), 2)
+				tmp = tmp + 1
+				tmp = int2ba(tmp, 9)
 			else:
 				tmp = int2ba(add, 9)
 			tmp = str(tmp)[10:-2]
@@ -137,7 +139,9 @@ class Instruccion():
 				size = 26		
 			jmp = tags[self.s[-1]] - self.pos
 			if jmp < 0:
-				tmp = (~ int2ba(-jmp, size)) ^ int2ba(1, size)
+				tmp = int((~ int2ba(-jmp, size)).to01(), 2)
+				tmp = tmp + 1
+				tmp = int2ba(tmp, size)
 			else:
 				tmp = int2ba(jmp, size)
 			tmp = str(tmp)[10:-2]
@@ -163,10 +167,3 @@ for pos,line in enumerate(entrada):
 	salida.write(Instruccion(line, pos).machine + "\n")
 salida.close()
 entrada.close()
-
-
-
-
-
-
-
