@@ -7,6 +7,7 @@ typeI = {"ADDI", "SUBI", "ANDI", "ORRI", "EORI"}
 typeD = {"LDUR", "STUR"}
 typeB = {"B", "BL"}
 typeCB = {"CBZ", "CBNZ", "B.EQ", "B.NE", "B.LT", "B.LE", "B.GT", "B.GE"}
+typeIM = {"MOVZ", "MOVK"}
 
 inst = {
 	"ADD" : "10001011000",
@@ -29,7 +30,10 @@ inst = {
 
 	"CBZ" : "10110100",
 	"CBNZ" : "10110101",
-	"B." : "01010100"
+	"B." : "01010100",
+
+	"MOVZ" : "110100101",
+	"MOVK" : "111100101"
 }
 
 reg = {
@@ -69,6 +73,7 @@ class Instruccion():
 		
 		self.type = self.setType()
 		self.opcode = self.setOPcode()
+		self.LSL = self.setLSL()
 		self.Rd = self.setRd()
 		self.Rn = self.setRn()
 		self.Rm = self.setRm()
@@ -94,10 +99,16 @@ class Instruccion():
 			return("B")
 		elif tmp in typeCB:
 			return("CB")
+		elif tmp in typeIM:
+			return("IM")
 	def setOPcode(self):
 		if self.type == "CB" and self.s[0][:2] == "B.":
-			return inst.get(self.s[0][:2])
+			return inst.get(self.s[0][:2]) 
 		return inst.get(self.s[0])
+	def setLSL(self):
+		if self.type == "IM":
+			return bin(int(self.s[3][1:]))[2:]
+		return ""
 	def setRd(self):
 		if self.type == "CB" and self.s[0][2:] in cond:
 			return cond.get(self.s[0][2:])
@@ -146,8 +157,13 @@ class Instruccion():
 				tmp = int2ba(jmp, size)
 			tmp = str(tmp)[10:-2]
 
-
+		elif self.type == "IM":
+			size = 16
+			tpm = bitarray()
+			tmp = int2ba(int(self.s[2][1:]), size)
+			tmp = str(tmp)[10:-2]
 		return tmp
+	
 	def build(self):
 		a = ""
 		if self.type == "R" or self.type == "R2":
@@ -160,6 +176,8 @@ class Instruccion():
 			a = self.opcode + self.ShIn
 		elif self.type == "CB":
 			a = self.opcode + self.ShIn + self.Rd
+		elif self.type == "IM":
+			a= self.opcode + self.LSL + self.ShIn + self.Rd 
 		return(a)
 
 salida = open("output.txt", "w")
