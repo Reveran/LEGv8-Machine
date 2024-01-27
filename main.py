@@ -1,5 +1,6 @@
 from bitarray import bitarray
 from bitarray.util import int2ba
+from re import sub
 
 typeR = {"ADD", "SUB", "AND", "ORR", "EOR"}
 typeR2 = {"LSL", "LSR"}
@@ -63,9 +64,25 @@ for x,line in enumerate(entrada):
 		tags[line.split("	")[0]] = x
 
 entrada.seek(0)
+
+def clean(line):
+    # Remove "[" and "]"
+    line = sub(r'[\[\]]', '', line)
+    
+    # Remove semicolons
+    line = line.replace(':', '')
+
+	# Remove commas
+    line = line.replace(',', '')
+
+	# Remove "//" and all text after it
+    line = sub(r'\s*//.*', '', line)
+
+    return line
 	
 class Instruccion():
 	def __init__(self, line, pos):
+		line = clean(line)
 		self.tag = line.split("	")[0]
 		self.s = line.split("	")[-1].split(" ")
 		self.pos = pos
@@ -107,7 +124,7 @@ class Instruccion():
 		return inst.get(self.s[0])
 	def setLSL(self):
 		if self.type == "IM":
-			return bin(int(self.s[3][1:]))[2:]
+			return format(int(self.s[3][1:]), '02b')
 		return ""
 	def setRd(self):
 		if self.type == "CB" and self.s[0][2:] in cond:
@@ -182,6 +199,6 @@ class Instruccion():
 
 salida = open("output.txt", "w")
 for pos,line in enumerate(entrada):
-	salida.write(Instruccion(line, pos).machine + "\n")
+	salida.write("32'b" + Instruccion(line, pos).machine + ","+ "\n")
 salida.close()
 entrada.close()
