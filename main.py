@@ -66,28 +66,27 @@ for x,line in enumerate(entrada):
 entrada.seek(0)
 
 def clean(line):
+	
+	# Remove "//" and all text after it
+    line = sub(r'\s*//.*', '', line)
+
     # Remove "[" and "]"
     line = sub(r'[\[\]]', '', line)
     
     # Remove semicolons
-    line = line.replace(':', '')
+    line = line.replace(':', '	')
 
 	# Remove commas
     line = line.replace(',', '')
-
-	# Remove "//" and all text after it
-    line = sub(r'\s*//.*', '', line)
 
     return line
 	
 class Instruccion():
 	def __init__(self, line, pos):
-		line = clean(line)
 		self.tag = line.split("	")[0]
 		self.s = line.split("	")[-1].split(" ")
 		self.pos = pos
 		self.normalize()
-		
 		self.type = self.setType()
 		self.opcode = self.setOPcode()
 		self.LSL = self.setLSL()
@@ -199,6 +198,8 @@ class Instruccion():
 
 salida = open("output.txt", "w")
 for pos,line in enumerate(entrada):
-	salida.write("32'b" + Instruccion(line, pos).machine + ","+ "\n")
+	line = clean(line)
+	if(len(line)>3):
+		salida.write("32'b" + Instruccion(line, pos).machine + ","+ "\n")
 salida.close()
 entrada.close()
